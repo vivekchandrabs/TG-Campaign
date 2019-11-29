@@ -16,7 +16,7 @@
                     <input type="text" v-model="message.title" class="form-control">
                     <br>
                     <label>Content</label>
-                    <vue-simplemde  v-model="message.content" ref="markdownEditor" />
+                    <vue-editor  v-model="message.content" ref="markdownEditor" :editorToolbar="customToolbar"></vue-editor >
                 </div>
                 <div class="modal-footer">
                       <button type="button" class="btn btn-sm btn-success" data-dismiss="modal" v-on:click="sendmessage"><i class="fas fa-arrow-right"></i> Send Message</button>
@@ -28,15 +28,17 @@
 </template>
 
 <script>
-import VueSimplemde from 'vue-simplemde'
+import { VueEditor } from "vue2-editor";
+
 export default {
   name: "CustomMessenger",
   props: ["groupid", "apikey"],
-   components: {
-      VueSimplemde
-    },
+  components: {
+    VueEditor
+  },
   data() {
     return {
+      customToolbar: [["bold", "italic"], ["code-block"], ["link"], ["clean"]],
       message: {
         title: "",
         content: ""
@@ -45,11 +47,13 @@ export default {
   },
   methods: {
     sendmessage: function() {
+      var series_id = this.$route.params.series_id;
       this.$store.dispatch("sendMessage", {
         title: this.message.title,
         content: this.message.content,
         chat_id: this.groupid,
-        api_key: this.apikey
+        api_key: this.apikey,
+        series_id: series_id
       });
     }
   }
@@ -57,7 +61,7 @@ export default {
 </script>
 
 <style scoped>
-@import '../../node_modules/simplemde/dist/simplemde.min.css';
+@import "../../node_modules/simplemde/dist/simplemde.min.css";
 
 .custom-button:hover {
   color: #ffffff;
@@ -68,7 +72,7 @@ export default {
   padding-right: 40px;
   color: #f0932b;
   font-weight: 800;
-  font-size:13px;
+  font-size: 13px;
 }
 </style>
 

@@ -79,10 +79,10 @@
                         <div class="card-body" >
                             <img src="../images/edit.png" alt="edit" class="post_edit_icon" v-on:click="editpost(post.id)" data-target="#createNewPost" data-toggle="modal"/>
                             <i class="fa fa-check" aria-hidden="true" v-if="post.is_sent" style="color:green;font-size:22px"></i>
-                            <h5  class="posttitle"><i>{{post.title}}</i></h5>
+                            <h6  class="posttitle"><i>{{post.title}}</i></h6>
                             <hr>
                             <br>
-                            <h5 class="postcontent"> {{post.content}}</h5>                            
+                            <h6 class="postcontent" v-html="post.content"></h6>                            
                             <img src="../images/delete.png" alt="edit" class="post_delete_icon" v-on:click="deletepost(post.id)"/>
                         </div>
                     </div>
@@ -90,7 +90,8 @@
                 </div>
             <div class="col-md-4">
               <CustomMessenger v-bind:groupid="group_id" v-bind:apikey="api_key" v-if="loading" style="display:inline"/>
-
+              <br><br>
+              <AllMessages v-bind:groupid="group_id" v-bind:apikey="api_key" v-if="loading" style="display:inline" />
             </div>
         </div>        
     </div>   
@@ -109,7 +110,7 @@
                 <div class="modal-body">
                     <label>Period:</label>
                     <select class="form-control" @change="recordPeriodicSchedule($event)">
-                        <option value="daily">Daliy</option>
+                        <option value="daily">Daily</option>
                         <option value="wednesday">Every Wednesday</option>
                         <option value="saturdays">Every Weekends</option>
                         <option value="mon_to_fri">Monday To Friday</option>
@@ -175,7 +176,7 @@
                     <input type="text" class="form-control" placeholder="Enter title of the Post" v-model="newPost.title" required>
                     <br>
                     <label>Post Content</label>
-                    <vue-simplemde placeholder="Enter Content here....." v-model="newPost.content" ref="markdownEditor" required />
+                    <vue-editor placeholder="Enter Content here....." v-model="newPost.content" :editorToolbar="customToolbar"></vue-editor>
                 </div>
                 <div class="modal-footer" >
                     <button type="button" class="btn btn-sm btn-success"  v-on:click="createNewPost(newPost.post_id)" data-dismiss="modal" aria-label="Close"
@@ -191,19 +192,27 @@
 </template>
 
 <script>
-import VueSimplemde from "vue-simplemde";
+import { VueEditor } from "vue2-editor";
 import NavBar from "./NavBar.vue";
 import store from "../stores";
 import CustomMessenger from "./CustomMessenger.vue";
+import AllMessages from "./AllMessages"
 export default {
   name: "EditSeries",
   components: {
     NavBar,
     CustomMessenger,
-    VueSimplemde
+    VueEditor,
+    AllMessages
   },
   data() {
     return {
+      customToolbar: [
+        ["bold", "italic"],
+        ["code-block"],
+        ["link"],
+        ["clean"]
+      ],
       periodic_schedule_period: "daily",
       to_display: "",
 
@@ -370,6 +379,13 @@ export default {
   text-align: justify;
 }
 
+.postcontent pre{
+  background-color: black;
+  border-radius: 5px;
+  padding: 8px;
+  color:chocolate;
+}
+
 .posttitle {
   padding-left: 10px;
   color: #5c5c5c;
@@ -402,7 +418,6 @@ export default {
   padding: 10px;
   border-radius: 5px;
 }
-
 
 .custom-button:hover {
   color: #ffffff;

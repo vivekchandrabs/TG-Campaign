@@ -10,7 +10,12 @@
   "dependencies": {
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
+    "moment": "^2.24.0",
+    "momentum": "^4.0.0",
+    "undefined": "^0.1.0",
     "vue": "^2.6.10",
+    "vue-html-editor": "^0.2.1",
+    "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.1.2",
     "vue-simplemde": "^1.0.0",
     "vue2-editor": "^2.10.2",

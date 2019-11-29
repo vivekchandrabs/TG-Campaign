@@ -7,12 +7,14 @@ var LOGIN_SITE_PREFIX = "http://127.0.0.1:8000/api-token-auth/"
 
 const state = {
     AllSeries : [],
-    Series: {}
+    Series: {},
+    AllMessages: []
 }
 
 const getters = {
     AllSeries: state => state.AllSeries,
-    Series: state => state.Series
+    Series: state => state.Series,
+    AllMessages: state => state.AllMessages
 }
 
 const actions = {
@@ -148,12 +150,21 @@ const actions = {
         axios.defaults.headers.common["Authorization"] = "Token " + window.localStorage["token"]
         axios.patch(SITE_PREFIX+`/series/${json_data["series_id"]}/`, json_data)
         .then(res => console.log("sent"))
+    }),
+
+    fetchAllMessages: (store, series_id) => new Promise((resolve, reject) => {
+      axios.defaults.headers.common["Authorization"] = "Token " + window.localStorage["token"]
+      axios.get(SITE_PREFIX+`/custom-message/?series_id=${series_id}`)
+      .then(res => resolve(res.data))
+      .catch(err => reject(err))
     })
+    
 }
 
 const mutations = {
     commitAllSeries : (state, all_series_data) => (state.AllSeries = all_series_data),
-    commitSeries: (state, series) => (state.Series = series)
+    commitSeries: (state, series) => (state.Series = series),
+    commitAllMessages: (state, allMessages) => (state.AllMessages = allMessages)
 }
 
 export default {

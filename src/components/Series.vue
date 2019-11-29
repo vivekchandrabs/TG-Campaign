@@ -72,10 +72,10 @@
             <div class="card post-card" v-for="post in posts" :key="post.post_id">
                 <div class="card-body" >
                     <img src="../images/edit.png" alt="edit" class="post_edit_icon" v-on:click="editpost(post.post_id)" data-target="#createNewPost" data-toggle="modal"/>
-                    <h4  class="posttitle">{{post.title}}</h4>
+                    <h6  class="posttitle">{{post.title}}</h6>
                     <hr>
                     <br>
-                    <div class="postcontent" v-html="post.content"></div>                            
+                    <h6 class="postcontent" v-html="post.content"></h6>                            
                     <img src="../images/delete.png" alt="edit" class="post_delete_icon" v-on:click="deletepost(post.post_id)" />
                 </div>
              </div>
@@ -98,7 +98,7 @@
                 <div class="modal-body">
                     <label>Period:</label>
                     <select class="form-control" @change="recordPeriodicSchedule($event)">
-                        <option value="daily">Daliy</option>
+                        <option value="daily">Daily</option>
                         <option value="wednesday">Every Wednesday</option>
                         <option value="saturdays">Every Weekends</option>
                         <option value="mon_to_fri">Monday To Friday</option>
@@ -164,7 +164,7 @@
                     <input type="text" class="form-control" placeholder="Enter title of the Post" v-model="newPost.title" required>
                     <br>
                     <label>Post Content:</label>
-                    <vue-simplemde  v-model="newPost.content" ref="markdownEditor" required />
+                    <vue-editor  v-model="newPost.content" ref="markdownEditor" :editorToolbar="customToolbar" placeholder="Enter content of the Post"></vue-editor>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-success"  v-on:click="createNewPost(newPost.post_id)" data-dismiss="modal"
@@ -178,16 +178,22 @@
 </template>
 
 <script>
-import VueSimplemde from "vue-simplemde";
 import NavBar from "./NavBar.vue";
+import { VueEditor } from "vue2-editor";
 export default {
   name: "Series",
   components: {
-    VueSimplemde,
-    NavBar
+    NavBar,
+    VueEditor
   },
   data() {
     return {
+      customToolbar: [
+        ["bold", "italic"],
+        ["code-block"],
+        ["link"],
+        ["clean"]
+      ],
       title: "",
       periodic_schedule_period: "daily",
       to_display: "None",
@@ -324,6 +330,13 @@ export default {
   font-weight: 450;
   text-align: justify;
   padding-right: 40px;
+}
+
+.postcontent pre{
+  background-color: black;
+  border-radius: 5px;
+  padding: 8px;
+  color:chocolate;
 }
 
 .posttitle {
