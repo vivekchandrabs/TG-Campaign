@@ -1,9 +1,9 @@
 import axios from "axios"
-var SITE_PREFIX = "http://127.0.0.1:8000/bot"
-var LOGIN_SITE_PREFIX = "http://127.0.0.1:8000/api-token-auth/"
+// var SITE_PREFIX = "http://127.0.0.1:8000/bot"
+// var LOGIN_SITE_PREFIX = "http://127.0.0.1:8000/api-token-auth/"
 
-// var SITE_PREFIX = "https://tg-camp.herokuapp.com/bot"
-// var LOGIN_SITE_PREFIX = "https://tg-camp.herokuapp.com/api-token-auth/"
+var SITE_PREFIX = "https://tg-camp.herokuapp.com/bot"
+var LOGIN_SITE_PREFIX = "https://tg-camp.herokuapp.com/api-token-auth/"
 
 const state = {
     AllSeries : [],
